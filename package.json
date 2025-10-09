@@ -1,0 +1,46 @@
+{
+  "name": "lama-dev-next-dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@radix-ui/react-slot": "^1.2.3",
+    "@radix-ui/react-toast": "^1.2.15",
+    "@react-pdf-viewer/core": "^3.12.0",
+    "@react-pdf-viewer/default-layout": "^3.12.0",
+    "@react-pdf/renderer": "^4.3.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
+    "lucide-react": "^0.544.0",
+    "next": "^14.2.32",
+    "pdfjs-dist": "^3.11.174",
+    "react": "^18",
+    "react-big-calendar": "^1.19.4",
+    "react-dom": "^18",
+    "react-modal": "^3.16.3",
+    "react-pdf": "^10.1.0",
+    "recharts": "^3.2.0",
+    "tailwind-merge": "^3.3.1",
+    "tailwind-scrollbar-hide": "^4.0.0",
+    "tailwindcss-animate": "^1.0.7"
+  },
+  "devDependencies": {
+    "@types/globalize": "^1.5.5",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-big-calendar": "^1.16.2",
+    "@types/react-dom": "^18",
+    "@types/react-modal": "^3.16.3",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.5",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  }
+}
