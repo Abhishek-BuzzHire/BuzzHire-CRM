@@ -13,31 +13,31 @@ const menuItems = [
         icon: "/dashboard.png",
         label: "Dashboard",
         href: "/admin",
-        visible: ["admin", "recruiter"],
+        visible: ["admin", "recruiter", "developer"],
       },
       {
         icon: "/calendar.png",
         label: "Calendar",
         href: "/list/calendar",
-        visible: ["admin", "recruiter"],
+        visible: ["admin", "recruiter", "developer"],
       },
       {
         icon: "/jobs.png",
         label: "Jobs",
         href: "/list/jobs",
-        visible: ["admin", "recruiter"],
+        visible: ["admin", "recruiter", "developer"],
       },
       {
         icon: "/candidates.png",
         label: "Candidates",
         href: "/list/candidates",
-        visible: ["admin", "recruiter"],
+        visible: ["admin", "recruiter", "developer"],
       },
       {
         icon: "/referrals.png",
         label: "My Referrals",
         href: "/list/referrals",
-        visible: ["admin", "recruiter"],
+        visible: ["admin", "recruiter", "developer"],
       },
     ],
   },
@@ -48,25 +48,20 @@ const menuItems = [
         icon:"/candidates.png",
         label: "Employees",
         href: "/list/employees",
-        visible: ["admin"]
+        visible: ["admin", "developer"]
       },
       {
         icon:"/calendar.png",
         label: "Attendance",
         href: "/list/attendance",
-        visible: ["recruiter"]
+        visible: ["recruiter", "developer"]
       },
-      {
-        icon:"/money.png",
-        label: "Expenses",
-        href: "/list/expense",
-        visible: ["admin"]
-      },
+      
       {
         icon:"/file-text.png",
         label: "Reports",
         href: "/list/reports",
-        visible: ["admin","recruiter"]
+        visible: ["admin","recruiter", "developer"]
       },
     ]
   },
@@ -77,19 +72,19 @@ const menuItems = [
         icon: "/profile.png",
         label: "Profile",
         href: "/profile",
-        visible: ["admin", "recruiter"],
+        visible: ["admin", "recruiter", "developer"],
       },
       {
         icon: "/settings.png",
         label: "Settings",
         href: "/settings",
-        visible: ["admin", "recruiter"],
+        visible: ["admin", "recruiter", "developer"],
       },
       {
         icon: "/logout.png",
         label: "Logout",
         href: "/logout",
-        visible: ["admin", "recruiter"],
+        visible: ["admin", "recruiter", "developer"],
       },
     ],
   },

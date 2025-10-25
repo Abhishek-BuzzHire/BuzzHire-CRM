@@ -1,6 +1,6 @@
 'use client'
 import Image from "next/image"
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ActionButton from "./ActionButton";
@@ -12,7 +12,7 @@ const Navbar = () => {
   const navLinks = [
     { name: 'Dashboard', href: '/admin' }, // Currently its navigation hard coded to be in admin dashboard but it should ne user.role in final production. Every dashboard is different, according to role...(admin/recruiters)
     { name: 'AI Assistance', href: '/ai-assist' },
-    { name: 'Database', href: '/database' },
+    { name: 'Candidate Search', href: '/database' },
   ]
 
   return (

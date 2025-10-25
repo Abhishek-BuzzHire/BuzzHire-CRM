@@ -21,6 +21,7 @@ const ActionButton = () => {
               <li className="px-4 py-1 hover:bg-gray-100 cursor-pointer">Add Candidate</li>
               <li className="px-4 py-1 hover:bg-gray-100 cursor-pointer">Add Event</li>
               <li className="px-4 py-1 hover:bg-gray-100 cursor-pointer">Add Job</li>
+              <li className="px-4 py-1 hover:bg-gray-100 cursor-pointer">Add Client</li>
             </ul>
           </div>
         )}
