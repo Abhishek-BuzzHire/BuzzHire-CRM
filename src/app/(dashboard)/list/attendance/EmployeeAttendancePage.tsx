@@ -6,10 +6,15 @@ import React, { useState, useEffect, useRef } from "react"
 import { useAttendance } from "@/hooks/useAttendance";
 import { format, isToday, isFuture, isWeekend, endOfWeek } from "date-fns";
 import { formatHoursWorked, formatMinutesToHHMM } from "@/utils/timeUtils";
-import { DayStatus } from "@/lib/types";
+import { DayStatus, Holiday, LeaveRequest } from "@/lib/types";
 import { useToast } from "@/hooks/use-toast";
 import { TimeEntryRow } from "@/components/attendance/TimeEntryRow";
 import { TimesheetHeader } from "@/components/attendance/TimeSheetHeader";
+import { TimesheetLegend } from "@/components/attendance/TimeSheetLegend";
+import { useLeave } from "@/hooks/useLeave";
+import { LeaveCard } from "@/components/attendance/LeaveCard";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { ChevronDown, FileX2 } from "lucide-react";
 
 const formatTime = (totalSeconds: number): string => {
   const hours = Math.floor(totalSeconds / 3600);
@@ -115,7 +120,7 @@ const PunchCard: React.FC<{ isPunchedIn: boolean, handlePunchAction: () => void,
   );
 };
 
-const AttendancePage = () => {
+const EmployeeAttendancePage = () => {
   const tabs = ['Attendance', 'Leaves', 'Shift', 'Seperation']
   const [activeTab, setActiveTab] = useState('Attendance')
   const [isPunchedIn, setIsPunchedIn] = useState(false);
@@ -256,9 +261,9 @@ const AttendancePage = () => {
                         <span key={time}>{time}</span>
                       ))}
                     </div>
-                    <div className="absolute bottom-0 left-[120px] right-0 h-px bg-border" />
                   </div>
                 </div>
+                <TimesheetLegend />
               </div>
               <div className="w-[20%] mt-12 relative space-y-4">
                 <PunchCard
@@ -281,6 +286,187 @@ const AttendancePage = () => {
             </div>
           </div>
         )
+
+      case "Leaves":
+        const Leave = () => {
+          const {
+            leaveTypes,
+            getUpcomingLeaves,
+            getPastLeaves,
+            getUpcomingHolidays,
+            getPastHolidays
+          } = useLeave();
+
+          const upcomingLeaves = getUpcomingLeaves();
+          const pastLeaves = getPastLeaves();
+          const upcomingHolidays = getUpcomingHolidays();
+          const pastHolidays = getPastHolidays();
+
+          const upcomingItems: (LeaveRequest | Holiday)[] = [...upcomingLeaves, ...upcomingHolidays].sort((a, b) => {
+            const dateA = 'startDate' in a ? a.startDate : a.date;
+            const dateB = 'startDate' in b ? b.startDate : b.date;
+            return dateA.localeCompare(dateB);
+          });
+
+          const pastItems: (LeaveRequest | Holiday)[] = [...pastLeaves, ...pastHolidays].sort((a, b) => {
+            const dateA = 'startDate' in a ? a.startDate : a.date;
+            const dateB = 'startDate' in b ? b.startDate : b.date;
+            return dateB.localeCompare(dateA);
+          });
+
+          return (
+            <div className="min-h-screen">
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <h1 className="text-2xl font-bold text-foreground">Leaves Tracker</h1>
+                </div>
+
+                {/* Leave Type Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {leaveTypes.map((leaveType) => (
+                    <LeaveCard key={leaveType.id} leaveType={leaveType} />
+                  ))}
+                </div>
+
+                {/* Upcoming Leave & Holidays */}
+                <Collapsible defaultOpen className="bg-card rounded-lg border border-border">
+                  <CollapsibleTrigger className="w-full p-6 flex items-center justify-between hover:bg-muted/50 transition-colors">
+                    <h2 className="text-lg font-semibold text-foreground">Upcoming Leave & Holidays</h2>
+                    <ChevronDown className="w-5 h-5 text-muted-foreground transition-transform duration-200" />
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <div className="px-6 pb-6">
+                      {upcomingItems.length === 0 ? (
+                        <div className="flex flex-col items-center justify-center py-12 text-center">
+                          <div className="w-48 h-48 mb-4 flex items-center justify-center">
+                            <FileX2 className="w-24 h-24 text-muted-foreground/30" />
+                          </div>
+                          <p className="text-muted-foreground font-medium">No Data Found</p>
+                        </div>
+                      ) : (
+                        <div className="space-y-3">
+                          {upcomingItems.map((item) => (
+                            <div
+                              key={item.id}
+                              className="p-4 bg-muted/30 rounded-lg flex items-center justify-between"
+                            >
+                              {'startDate' in item ? (
+                                <>
+                                  <div>
+                                    <p className="font-medium text-foreground">
+                                      {leaveTypes.find(t => t.id === item.leaveTypeId)?.name}
+                                    </p>
+                                    <p className="text-sm text-muted-foreground">
+                                      {format(new Date(item.startDate), 'MMM dd, yyyy')} - {format(new Date(item.endDate), 'MMM dd, yyyy')}
+                                    </p>
+                                  </div>
+                                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${item.status === 'approved' ? 'bg-success/10 text-success' :
+                                    item.status === 'rejected' ? 'bg-destructive/10 text-destructive' :
+                                      'bg-warning/10 text-warning'
+                                    }`}>
+                                    {item.status}
+                                  </span>
+                                </>
+                              ) : (
+                                <>
+                                  <div>
+                                    <p className="font-medium text-foreground">{item.name}</p>
+                                    <p className="text-sm text-muted-foreground">
+                                      {format(new Date(item.date), 'MMM dd, yyyy')}
+                                    </p>
+                                  </div>
+                                  <span className="px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
+                                    Holiday
+                                  </span>
+                                </>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </CollapsibleContent>
+                </Collapsible>
+
+                {/* Past Leave & Holidays */}
+                <Collapsible className="bg-card rounded-lg border border-border">
+                  <CollapsibleTrigger className="w-full p-6 flex items-center justify-between hover:bg-muted/50 transition-colors">
+                    <h2 className="text-lg font-semibold text-foreground">Past Leave & Holidays</h2>
+                    <ChevronDown className="w-5 h-5 text-muted-foreground transition-transform duration-200" />
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <div className="px-6 pb-6">
+                      {pastItems.length === 0 ? (
+                        <div className="flex flex-col items-center justify-center py-12 text-center">
+                          <div className="w-48 h-48 mb-4 flex items-center justify-center">
+                            <FileX2 className="w-24 h-24 text-muted-foreground/30" />
+                          </div>
+                          <p className="text-muted-foreground font-medium">No Data Found</p>
+                        </div>
+                      ) : (
+                        <div className="space-y-3">
+                          {pastItems.map((item) => (
+                            <div
+                              key={item.id}
+                              className="p-4 bg-muted/30 rounded-lg flex items-center justify-between opacity-75"
+                            >
+                              {'startDate' in item ? (
+                                <>
+                                  <div>
+                                    <p className="font-medium text-foreground">
+                                      {leaveTypes.find(t => t.id === item.leaveTypeId)?.name}
+                                    </p>
+                                    <p className="text-sm text-muted-foreground">
+                                      {format(new Date(item.startDate), 'MMM dd, yyyy')} - {format(new Date(item.endDate), 'MMM dd, yyyy')}
+                                    </p>
+                                  </div>
+                                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${item.status === 'approved' ? 'bg-success/10 text-success' :
+                                    item.status === 'rejected' ? 'bg-destructive/10 text-destructive' :
+                                      'bg-warning/10 text-warning'
+                                    }`}>
+                                    {item.status}
+                                  </span>
+                                </>
+                              ) : (
+                                <>
+                                  <div>
+                                    <p className="font-medium text-foreground">{item.name}</p>
+                                    <p className="text-sm text-muted-foreground">
+                                      {format(new Date(item.date), 'MMM dd, yyyy')}
+                                    </p>
+                                  </div>
+                                  <span className="px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
+                                    Holiday
+                                  </span>
+                                </>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </CollapsibleContent>
+                </Collapsible>
+              </div>
+            </div>
+          );
+        };
+
+        return (
+          <Leave />
+        )
+      case "Shift":
+        return (
+          <></>
+        )
+      case "Seperation":
+        return (
+          <></>
+        )
+      default:
+        return(
+          <></>
+        )
     }
   }
 
@@ -300,4 +486,4 @@ const AttendancePage = () => {
   )
 }
 
-export default AttendancePage
+export default EmployeeAttendancePage

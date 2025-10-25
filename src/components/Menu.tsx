@@ -53,8 +53,8 @@ const menuItems = [
       {
         icon:"/calendar.png",
         label: "Attendance",
-        href: "/list/attendance",
-        visible: ["recruiter", "developer"]
+        href: `/list/attendance/${role}`,
+        visible: ["admin", "recruiter", "developer"]
       },
       
       {

@@ -71,3 +71,28 @@ export interface ShiftConfig {
 }
 
 export type DayStatus = "weekend" | "absent" | "present" | "today" | "future";
+
+export interface LeaveType {
+  id: string;
+  name: string;
+  icon: string;
+  available: number;
+  booked: number;
+  color: string;
+}
+
+export interface LeaveRequest {
+  id: string;
+  leaveTypeId: string;
+  startDate: string;
+  endDate: string;
+  days: number;
+  reason: string;
+  status: "pending" | "approved" | "rejected";
+}
+
+export interface Holiday {
+  id: string;
+  name: string;
+  date: string;
+}
