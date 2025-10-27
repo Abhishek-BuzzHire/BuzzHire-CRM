@@ -102,7 +102,8 @@ export type AttendanceStatus =
   | 'absent'
   | 'weekend'
   | 'late'
-  | 'early';
+  | 'early'
+  | 'on-leave';
 
 export type NewEmployee = {
   id: string;
@@ -117,4 +118,18 @@ export type AttendanceRecord = {
   checkInTime?: string; // HH:mm
   checkOutTime?: string; // HH:mm
   hoursWorked?: number;
+};
+
+export type AdminLeaveRequest = {
+  id: string;
+  employeeId: string;
+  startDate: string; // YYYY-MM-DD
+  endDate: string; // YYYY-MM-DD
+  status: 'approved' | 'pending' | 'rejected';
+  leaveType: 'vacation' | 'sick' | 'personal';
+};
+
+export type CompanyHoliday = {
+  date: string; // YYYY-MM-DD
+  name: string;
 };

@@ -318,7 +318,7 @@ const EmployeeAttendancePage = () => {
             <div className="min-h-screen">
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                  <h1 className="text-2xl font-bold text-foreground">Leaves Tracker</h1>
+                  <h1 className="text-2xl text-foreground">Leaves Tracker</h1>
                 </div>
 
                 {/* Leave Type Cards */}
@@ -473,7 +473,7 @@ const EmployeeAttendancePage = () => {
   return (
     <div className="w-full bg-blueLight-50 p-4 relative">
       <div className="text-lg">
-        <div className="flex space-x-8 text-xs font-bold border-b border-gray-300 mb-6">
+        <div className="flex space-x-8 text-xs font-bold border-b border-gray-300 mb-12">
           {tabs.map(tab => (
             <button key={tab} onClick={() => setActiveTab(tab)} className={`p-2 ${activeTab === tab ? "border-b-2 border-blue-600" : "text-gray-500"}`}>
               {tab.toUpperCase()}

@@ -67,12 +67,8 @@ export default function AttendanceCalendar({
   const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   return (
-    <Card className="border-0 shadow-none xl:border xl:shadow-sm">
-      <CardHeader className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 border-b">
-        <div className="flex items-center gap-2">
-          {/* <TimeTrackLogo /> */}
-          <h1 className="text-xl font-bold text-foreground">TimeTrack Admin</h1>
-        </div>
+    <Card className="border-0 shadow-md xl:border xl:shadow-md">
+      <CardHeader className="flex flex-col sm:flex-row items-center justify-end gap-4 p-4 border-b">
         <div className="flex items-center gap-2">
           <Button
             variant="outline"
@@ -123,7 +119,7 @@ export default function AttendanceCalendar({
                 onClick={() => onSelectDate(day)}
                 disabled={!isCurrentMonth}
                 className={cn(
-                  'relative flex flex-col items-start justify-between p-2 h-28 sm:h-32 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+                  'relative flex flex-col items-start justify-between p-2 h-28 sm:h-40 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
                   isCurrentMonth ? 'bg-card hover:bg-secondary' : 'bg-muted/50 text-muted-foreground',
                   isSelected && 'ring-2 ring-primary ring-offset-2',
                   !isCurrentMonth && 'opacity-50 cursor-default'
