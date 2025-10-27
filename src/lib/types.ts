@@ -96,3 +96,25 @@ export interface Holiday {
   name: string;
   date: string;
 }
+
+export type AttendanceStatus =
+  | 'present'
+  | 'absent'
+  | 'weekend'
+  | 'late'
+  | 'early';
+
+export type NewEmployee = {
+  id: string;
+  name: string;
+  avatarUrl: string;
+};
+
+export type AttendanceRecord = {
+  employeeId: string;
+  date: string; // YYYY-MM-DD
+  status: AttendanceStatus;
+  checkInTime?: string; // HH:mm
+  checkOutTime?: string; // HH:mm
+  hoursWorked?: number;
+};
