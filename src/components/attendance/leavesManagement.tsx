@@ -152,31 +152,6 @@ export default function LeaveManagement() {
                 </CardContent>
             </Card>
             <CompanyHolidays />
-            {/* <Card className="lg:col-span-1 shadow-sm">
-                <CardHeader>
-                    <CardTitle>Company Holidays</CardTitle>
-                    <CardDescription>Upcoming holidays for {format(currentDate, 'yyyy')}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <ScrollArea className="h-[600px]">
-                        <div className="space-y-4">
-                            {companyHolidays.map((holiday) => (
-                                <div key={holiday.date} className="flex items-center p-3 rounded-md bg-muted/50">
-                                    <div className="p-2 bg-muted rounded-md mr-4">
-                                        <CalendarDays className="h-6 w-6 text-foreground" />
-                                    </div>
-                                    <div>
-                                        <p className="font-semibold">{holiday.name}</p>
-                                        <p className="text-sm text-muted-foreground">
-                                            {format(new Date(holiday.date), 'EEEE, MMMM do')}
-                                        </p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </ScrollArea>
-                </CardContent>
-            </Card> */}
         </div>
     );
 }

@@ -56,11 +56,16 @@ const menuItems = [
         href: `/list/attendance/${role}`,
         visible: ["admin", "recruiter", "developer"]
       },
-      
       {
         icon:"/file-text.png",
         label: "Reports",
         href: "/list/reports",
+        visible: ["admin","recruiter", "developer"]
+      },
+      {
+        icon:"/file-text.png",
+        label: "Clients",
+        href: "/list/clients",
         visible: ["admin","recruiter", "developer"]
       },
     ]
