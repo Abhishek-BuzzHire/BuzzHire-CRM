@@ -1,5 +1,7 @@
 // TEMPORARY DATA
 
+import { Client, ClientWithHRs, EmailTemplate, HR, HRWithClient } from "./types";
+
 export let role = "admin";
 
 const today = new Date();
@@ -815,32 +817,6 @@ export const employeeData = [
   }
 ]
 
-
-export interface Client {
-  id: number;
-  name: string; // Company name
-  location: string;
-  contactPerson: string;
-  contactPersonNumber: string;
-  industry: string;
-}
-
-export interface HR {
-  id: number; // HR ID
-  clientId: number; // Foreign key relation to Client table
-  name: string;
-  email: string;
-  designation: string;
-  number: string;
-}
-
-// Derived / Relationship Type
-export interface ClientWithHRs extends Client {
-  hrs: HR[];
-}
-
-// Dummy data (seed)
-
 export const clients: Client[] = [
   {
     id: 1,
@@ -886,7 +862,7 @@ export const clients: Client[] = [
 
 export const hr: HR[] = [
   {
-    id: 101,
+    id: 1,
     clientId: 1,
     name: "Sanjana Rao",
     email: "sanjana.rao@technova.com",
@@ -894,7 +870,7 @@ export const hr: HR[] = [
     number: "+91-9988776655"
   },
   {
-    id: 102,
+    id: 2,
     clientId: 1,
     name: "Karan Patel",
     email: "karan.patel@technova.com",
@@ -902,7 +878,7 @@ export const hr: HR[] = [
     number: "+91-9988776655"
   },
   {
-    id: 103,
+    id: 3,
     clientId: 2,
     name: "Ritika Shah",
     email: "ritika.shah@greenfieldagro.com",
@@ -910,7 +886,7 @@ export const hr: HR[] = [
     number: "+91-9988776655"
   },
   {
-    id: 104,
+    id: 4,
     clientId: 3,
     name: "Abhishek Kumar",
     email: "abhishek.kumar@skyreachlogistics.com",
@@ -918,7 +894,7 @@ export const hr: HR[] = [
     number: "+91-9988776655"
   },
   {
-    id: 105,
+    id: 5,
     clientId: 4,
     name: "Divya Nair",
     email: "divya.nair@healthbridgepharma.com",
@@ -926,7 +902,7 @@ export const hr: HR[] = [
     number: "+91-9988776655"
   },
   {
-    id: 106,
+    id: 6,
     clientId: 5,
     name: "Rohit Bansal",
     email: "rohit.bansal@edunext.com",
@@ -935,9 +911,123 @@ export const hr: HR[] = [
   }
 ];
 
-export const getClientsWithHRs = (): ClientWithHRs[] => {
-  return clients.map(client => ({
-    ...client,
-    hrs: hr.filter(h => h.clientId === client.id)
-  }));
+export const getHRsWithClients = (): HRWithClient[] => {
+  return hr.map(h => {
+    const relatedClient = clients.find(c => c.id === h.clientId);
+
+    // Safety check in case no client is found (optional)
+    if (!relatedClient) {
+      throw new Error(`Client not found for HR ID: ${h.id}`);
+    }
+
+    return {
+      ...h,
+      client: relatedClient
+    };
+  });
 };
+
+
+export const template: EmailTemplate[] = [
+  {
+    "id": 1,
+    "hrId": 1,
+    "fields": [
+      { "id": 1, "label": "Email", "key": "email", "isCustom": false },
+      { "id": 2, "label": "Name", "key": "name", "isCustom": false },
+      { "id": 3, "label": "New Field Start", "key": "custom_1", "isCustom": true },
+      { "id": 4, "label": "Notice Period", "key": "noticePeriod", "isCustom": false },
+      { "id": 5, "label": "Skills", "key": "skills", "isCustom": false },
+      { "id": 6, "label": "Experience", "key": "experience", "isCustom": false },
+      { "id": 7, "label": "Current CTC", "key": "currentCTC", "isCustom": false },
+      { "id": 8, "label": "Current Company", "key": "currentCompany", "isCustom": false },
+      { "id": 9, "label": "Location", "key": "location", "isCustom": false },
+      { "id": 10, "label": "Phone", "key": "phone", "isCustom": false },
+      { "id": 11, "label": "Expected CTC", "key": "expectedCTC", "isCustom": false },
+      { "id": 12, "label": "New Field End", "key": "custom_2", "isCustom": true }
+    ],
+    "createdAt": "2025-10-29T14:12:48.553Z",
+    "updatedAt": "2025-10-29T14:12:48.553Z"
+  },
+  {
+    "id": 2,
+    "hrId": 2,
+    "fields": [
+      { "id": 1, "label": "New Field Start", "key": "custom_3", "isCustom": true },
+      { "id": 2, "label": "Expected CTC", "key": "expectedCTC", "isCustom": false },
+      { "id": 3, "label": "Notice Period", "key": "noticePeriod", "isCustom": false },
+      { "id": 4, "label": "Current Company", "key": "currentCompany", "isCustom": false },
+      { "id": 5, "label": "Phone", "key": "phone", "isCustom": false },
+      { "id": 6, "label": "Email", "key": "email", "isCustom": false },
+      { "id": 7, "label": "Experience", "key": "experience", "isCustom": false },
+      { "id": 8, "label": "Current CTC", "key": "currentCTC", "isCustom": false },
+      { "id": 9, "label": "Skills", "key": "skills", "isCustom": false },
+      { "id": 10, "label": "Location", "key": "location", "isCustom": false },
+      { "id": 11, "label": "Name", "key": "name", "isCustom": false },
+      { "id": 12, "label": "New Field End", "key": "custom_4", "isCustom": true }
+    ],
+    "createdAt": "2025-10-29T14:13:01.122Z",
+    "updatedAt": "2025-10-29T14:13:01.122Z"
+  },
+  {
+    "id": 3,
+    "hrId": 3,
+    "fields": [
+      { "id": 1, "label": "Skills", "key": "skills", "isCustom": false },
+      { "id": 2, "label": "New Field Start", "key": "custom_5", "isCustom": true },
+      { "id": 3, "label": "Experience", "key": "experience", "isCustom": false },
+      { "id": 4, "label": "Email", "key": "email", "isCustom": false },
+      { "id": 5, "label": "Current Company", "key": "currentCompany", "isCustom": false },
+      { "id": 6, "label": "Name", "key": "name", "isCustom": false },
+      { "id": 7, "label": "Notice Period", "key": "noticePeriod", "isCustom": false },
+      { "id": 8, "label": "Expected CTC", "key": "expectedCTC", "isCustom": false },
+      { "id": 9, "label": "Current CTC", "key": "currentCTC", "isCustom": false },
+      { "id": 10, "label": "Phone", "key": "phone", "isCustom": false },
+      { "id": 11, "label": "Location", "key": "location", "isCustom": false },
+      { "id": 12, "label": "New Field End", "key": "custom_6", "isCustom": true }
+    ],
+    "createdAt": "2025-10-29T14:13:25.441Z",
+    "updatedAt": "2025-10-29T14:13:25.441Z"
+  },
+  {
+    "id": 4,
+    "hrId": 4,
+    "fields": [
+      { "id": 1, "label": "New Field Start", "key": "custom_7", "isCustom": true },
+      { "id": 2, "label": "Phone", "key": "phone", "isCustom": false },
+      { "id": 3, "label": "Location", "key": "location", "isCustom": false },
+      { "id": 4, "label": "Skills", "key": "skills", "isCustom": false },
+      { "id": 5, "label": "Current CTC", "key": "currentCTC", "isCustom": false },
+      { "id": 6, "label": "Notice Period", "key": "noticePeriod", "isCustom": false },
+      { "id": 7, "label": "Email", "key": "email", "isCustom": false },
+      { "id": 8, "label": "Expected CTC", "key": "expectedCTC", "isCustom": false },
+      { "id": 9, "label": "Experience", "key": "experience", "isCustom": false },
+      { "id": 10, "label": "Current Company", "key": "currentCompany", "isCustom": false },
+      { "id": 11, "label": "Name", "key": "name", "isCustom": false },
+      { "id": 12, "label": "New Field End", "key": "custom_8", "isCustom": true }
+    ],
+    "createdAt": "2025-10-29T14:14:10.119Z",
+    "updatedAt": "2025-10-29T14:14:10.119Z"
+  },
+  {
+    "id": 5,
+    "hrId": 5,
+    "fields": [
+      { "id": 1, "label": "New Field Start", "key": "custom_9", "isCustom": true },
+      { "id": 2, "label": "Name", "key": "name", "isCustom": false },
+      { "id": 3, "label": "Expected CTC", "key": "expectedCTC", "isCustom": false },
+      { "id": 4, "label": "Skills", "key": "skills", "isCustom": false },
+      { "id": 5, "label": "Experience", "key": "experience", "isCustom": false },
+      { "id": 6, "label": "Notice Period", "key": "noticePeriod", "isCustom": false },
+      { "id": 7, "label": "Current CTC", "key": "currentCTC", "isCustom": false },
+      { "id": 8, "label": "Current Company", "key": "currentCompany", "isCustom": false },
+      { "id": 9, "label": "Location", "key": "location", "isCustom": false },
+      { "id": 10, "label": "Phone", "key": "phone", "isCustom": false },
+      { "id": 11, "label": "Email", "key": "email", "isCustom": false },
+      { "id": 12, "label": "New Field End", "key": "custom_10", "isCustom": true }
+    ],
+    "createdAt": "2025-10-29T14:15:22.220Z",
+    "updatedAt": "2025-10-29T14:15:22.220Z"
+  },
+]
+

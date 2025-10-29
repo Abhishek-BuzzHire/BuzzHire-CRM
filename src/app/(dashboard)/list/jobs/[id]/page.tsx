@@ -111,9 +111,6 @@ const SingleJobPage = () => {
 
                     {/* Right section */}
                     <div className="flex items-center space-x-2">
-                        {/* <button className="border border-gray-300 rounded-md px-4 py-2 text-sm">
-                            Share & Promote
-                        </button> */}
                         <button className=" flex bg-brand-600 text-white rounded-md px-4 py-2 text-sm">
                             Published
                             <Image src={"/chev-down.png"} alt="" width={20} height={20} className="invert brightness-0 ml-2" />

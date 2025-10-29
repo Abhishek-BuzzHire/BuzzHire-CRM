@@ -1,4 +1,4 @@
-import { ClientWithHRs } from "@/lib/data"
+import { ClientWithHRs } from "@/lib/types"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
 import Image from "next/image"
 
@@ -24,7 +24,7 @@ const ClientCard = ({ client }: ClientCardProps) => {
                 </div>
                 <div className="block items-center mt-4">
                     <span className="text-sm text-gray-500">HR Representatives:</span>
-                    <div className="mt-2 w-full bg-blueLight-50 rounded-md p-4 space-y-4">
+                    <div className="my-2 w-full bg-blueLight-50 rounded-md p-4 space-y-4">
                         {client.hrs.map((hr) => (
                             <div key={hr.id} className="flex justify-between border-b-2 border-gray-300 pb-4">
                                 <div className="flex items-center gap-4">
@@ -34,8 +34,8 @@ const ClientCard = ({ client }: ClientCardProps) => {
                                         <p className="text-xs text-gray-500">{hr.designation}</p>
                                     </div>
                                 </div>
-                                <div className="hidden text-gray-600 md:table-cell space-y-2">
-                                    <div className="flex gap-2 truncate">
+                                <div className="hidden text-gray-600 md:table-cell space-y-2 max-w-[250px] truncate">
+                                    <div className="flex gap-2 ">
                                         <Image src={"/mail.png"} alt="" width={20} height={20} className="opacity-65" />
                                         {hr.email}
                                     </div>
@@ -48,9 +48,8 @@ const ClientCard = ({ client }: ClientCardProps) => {
                         ))}
                     </div>
                 </div>
-
                 <div className="flex items-center space-x-4 font-semibold text-gray-800 mt-4">
-                    <span>Location</span> <span>{client.location}</span>
+                    <span>Location: </span><span className="font-normal">{client.location}</span>
                 </div>
             </CardContent>
         </Card>

@@ -1,10 +1,58 @@
 "use client"
 
 import ClientCard from "@/components/ClientCard";
-import { clients, getClientsWithHRs } from "@/lib/data"
+import EmailFormatList from "@/components/EmailFormatList";
+import HRCard from "@/components/HRCard";
+import { clients, hr, template } from "@/lib/data"
+import { Client, ClientWithHRs, EmailTemplate, HR, HRWithClient, HRWithTemplates, TemplateWithHR } from "@/lib/types";
 import { useState } from "react"
 
-const data = getClientsWithHRs();
+function getClientsWithHRs(clients: Client[], hrs: HR[]): ClientWithHRs[] {
+  return clients.map(client => ({
+    ...client,
+    hrs: hr.filter(h => h.clientId === client.id)
+  }));
+};
+
+function getHRsWithClients(hr: HR[], clients: Client[]): HRWithClient[] {
+  return hr.map(h => {
+    const relatedClient = clients.find(c => c.id === h.clientId);
+
+    // Safety check in case no client is found (optional)
+    if (!relatedClient) {
+      throw new Error(`Client not found for HR ID: ${h.id}`);
+    }
+
+    return {
+      ...h,
+      client: relatedClient
+    };
+  });
+}
+
+function getTemplateByHR(hr: HR[], client: Client[], templates: EmailTemplate[]): HRWithTemplates[] {
+  return hr.map((h) => {
+    const hrTemplates = templates.filter((tpl) => tpl.hrId === h.id);
+    const relatedClient = clients.find(c => c.id === h.clientId);
+
+    if (!relatedClient) {
+      throw new Error(`Client not found for HR ID: ${h.id}`);
+    }
+
+    return { ...h, client: relatedClient, templates: hrTemplates };
+  });
+}
+
+// function getHRbyTemplate(hrs: HR[], templates: EmailTemplate[]): TemplateWithHR[] {
+//   return templates.map((tpl) => {
+//     const hr = hrs.find((h) => h.id === tpl.hrId) || null;
+//     return { ...tpl, hr };
+//   });
+// }
+
+const data = getClientsWithHRs(clients, hr);
+const hrdata = getHRsWithClients(hr, clients);
+const templateData = getTemplateByHR(hr, clients, template);
 
 const ClientsPage = () => {
   const tabs = ["Client & HR", "Email Templates"]
@@ -19,15 +67,15 @@ const ClientsPage = () => {
           <>
             <div>
               <div className="flex justify-between">
-                <div className="my-8 text-md font-bold">
+                <div className="mt-8 text-md font-bold">
                   {view === 'client' && (
                     <div>
-                      Total Clients: <span className="ml-2 p-1 bg-blue-600 text-white rounded-md">20</span>
+                      Total Clients: <span className="ml-2 p-1 bg-blue-600 text-white rounded-md">{data.length}</span>
                     </div>
                   )}
                   {view === 'hr' && (
                     <div>
-                      Total HRs: <span className="ml-2 p-1 bg-blue-600 text-white rounded-md">32</span>
+                      Total HRs: <span className="ml-2 p-1 bg-blue-600 text-white rounded-md">{hrdata.length}</span>
                     </div>
                   )}
                 </div>
@@ -56,17 +104,21 @@ const ClientsPage = () => {
               </div>
               {view === 'client' && (
                 <>
-                <div className="grid mt-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-                {data.map((client)=>(
-                  <ClientCard key={client.id} client={client}/>
-                ))}
-                </div>
+                  <div className="grid mt-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+                    {data.map((client) => (
+                      <ClientCard key={client.id} client={client} />
+                    ))}
+                  </div>
                 </>
-                
+
               )}
               {view === 'hr' && (
                 <>
-                
+                  <div className="grid mt-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+                    {hrdata.map((hr) => (
+                      <HRCard key={hr.id} details={hr} />
+                    ))}
+                  </div>
                 </>
               )}
             </div>
@@ -75,6 +127,18 @@ const ClientsPage = () => {
       case "Email Templates":
         return (
           <>
+            <div>
+              <div className="flex justify-between">
+                <div className="mt-8 text-md font-bold">
+                  Active Templates: <span className="ml-2 p-1 bg-blue-600 text-white rounded-md">{templateData.length}</span>
+                </div>
+              </div>
+              <div className="mt-8">
+                {templateData.map((template)=>(
+                  <EmailFormatList key={template.id} data={template} />
+                ))}
+              </div>
+            </div>
           </>
         )
       default:
