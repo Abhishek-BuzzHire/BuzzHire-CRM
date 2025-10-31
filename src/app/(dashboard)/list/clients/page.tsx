@@ -30,7 +30,7 @@ function getHRsWithClients(hr: HR[], clients: Client[]): HRWithClient[] {
   });
 }
 
-function getTemplateByHR(hr: HR[], client: Client[], templates: EmailTemplate[]): HRWithTemplates[] {
+function getTemplateWithHR(hr: HR[], clients: Client[], templates: EmailTemplate[]): HRWithTemplates[] {
   return hr.map((h) => {
     const hrTemplates = templates.filter((tpl) => tpl.hrId === h.id);
     const relatedClient = clients.find(c => c.id === h.clientId);
@@ -43,6 +43,10 @@ function getTemplateByHR(hr: HR[], client: Client[], templates: EmailTemplate[])
   });
 }
 
+// function getTemplateByHR(hrId: number): EmailTemplate | undefined {
+//   return template.find(t=>t.hrId === hrId);
+// }
+
 // function getHRbyTemplate(hrs: HR[], templates: EmailTemplate[]): TemplateWithHR[] {
 //   return templates.map((tpl) => {
 //     const hr = hrs.find((h) => h.id === tpl.hrId) || null;
@@ -52,7 +56,7 @@ function getTemplateByHR(hr: HR[], client: Client[], templates: EmailTemplate[])
 
 const data = getClientsWithHRs(clients, hr);
 const hrdata = getHRsWithClients(hr, clients);
-const templateData = getTemplateByHR(hr, clients, template);
+const templateData = getTemplateWithHR(hr, clients, template);
 
 const ClientsPage = () => {
   const tabs = ["Client & HR", "Email Templates"]
@@ -134,9 +138,7 @@ const ClientsPage = () => {
                 </div>
               </div>
               <div className="mt-8">
-                {templateData.map((template)=>(
-                  <EmailFormatList key={template.id} data={template} />
-                ))}
+                <EmailFormatList data={templateData} />
               </div>
             </div>
           </>
