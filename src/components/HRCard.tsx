@@ -1,14 +1,17 @@
-import { HRWithClient } from "@/lib/types"
+import { HRWithClient, HRWithTemplates } from "@/lib/types"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 
 interface ClientCardProps {
   details: HRWithClient
 }
 
 const HRCard = ({ details }: ClientCardProps) => {
+  const router = useRouter()
+
   return (
-    < Card className="w-full min-w-[200px] shadow-md" >
+    <Card className="w-full min-w-[200px] shadow-md" >
       <CardHeader>
         <div className="flex justify-between">
           <div className="space-y-2">
@@ -30,7 +33,7 @@ const HRCard = ({ details }: ClientCardProps) => {
           </div>
         </div>
         <div className="flex justify-between mt-4 items-center">
-          <button className="flex bg-brand-600 text-white rounded-md px-4 py-2 text-sm">
+          <button className="flex bg-brand-600 text-white rounded-md px-4 py-2 text-sm" onClick={()=> router.push(`/list/clients/${details.id}`)}>
             View Template
             <Image src={"/chev-right.png"} alt="" width={20} height={20} className="invert brightness-0 ml-2" />
           </button>
