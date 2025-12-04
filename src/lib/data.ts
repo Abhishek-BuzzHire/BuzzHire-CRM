@@ -2,7 +2,7 @@
 
 import { Client, ClientWithHRs, EmailTemplate, HR, HRWithClient } from "./types";
 
-export let role = "admin";
+export let role = "recruiter";
 
 const today = new Date();
 const event = (title: string, year: number, month: number, day: number, startHour: number, startMin: number, endHour: number, endMin: number) => ({
@@ -28,7 +28,6 @@ export const calendarEvents = [
   // Next week
   event("Interview: Ian Brown", today.getFullYear(), today.getMonth(), today.getDate() + 5, 9, 0, 9, 45),
   event("Interview: Jessica Green", today.getFullYear(), today.getMonth(), today.getDate() + 6, 11, 0, 11, 45),
-
 ];
 
 export const jobsData = [

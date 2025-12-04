@@ -110,7 +110,7 @@ const PunchCard: React.FC<{ isPunchedIn: boolean, handlePunchAction: () => void,
             hover:scale-[1.02] active:scale-[0.98]
           `}
         >
-          {isPunchedIn ? 'Punch Out' : 'Punch In'}
+          {isPunchedIn ? 'Clock Out' : 'Clock In'}
         </button>
         <p className="mt-4 text-xs text-gray-500">
           {isPunchedIn ? `Punched In at: ${punchTime}` : punchTime ? `Punched Out at: ${punchTime}` : 'Ready to start your shift.'}
