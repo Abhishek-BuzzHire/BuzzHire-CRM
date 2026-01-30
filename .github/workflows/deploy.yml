@@ -38,4 +38,4 @@ jobs:
 
           # 4. Restart the specific PM2 process for this application
           # This ensures the app reloads with the new code on Port 3001
-          pm2 restart crm-frontend
+          pm2 restart candidates-frontend
